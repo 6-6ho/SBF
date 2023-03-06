@@ -4,8 +4,9 @@ from data_loader import CustomImageDataset
 from model import ResNet
 from torch.utils.data import DataLoader
 from torchvision import transforms
+from PIL import Image
 
-def prediction_model():
+def prediction():
     classes = ['beuk', 'chung', 'hye']
 
     my_epoch = 15
@@ -42,8 +43,8 @@ def prediction_model():
         train_loss /= len(train_loader.dataset)
 
     # Get the prediciton
-    image_path = ""
-    image = None
+    image_path = 'example_img.jpg'
+    image = Image.open(image_path)
 
     transform = transforms.Compose([
         transforms.Resize(256),
