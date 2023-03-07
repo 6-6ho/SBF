@@ -19,7 +19,7 @@ for token in token_list:
     data_list = os.listdir(image_path)
     print(len(data_list))
 
-    for name in data_list:
+    for name in data_list:  
         im = cv2.imread(image_path + name)
         im = cv2.resize(im, (244, 244))
         cv2.imwrite(save_path + name, im)
