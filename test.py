@@ -4,35 +4,24 @@ from data_loader import CustomImageDataset
 from model import ResNet
 from torch.utils.data import DataLoader
 
-classes = ['beuk', 'chung', 'hye']
+# Set hyperparameters
+epochs = 15
+batch_size = 32
+learning_rate = 0.0001
 
-my_epoch = 15
-my_batch = 32
-my_learning_rate = 0.0001
+# Load datasets and create data loaders
+train_loader = DataLoader(CustomImageDataset("train"), batch_size=batch_size, shuffle=True)
+valid_loader = DataLoader(CustomImageDataset("valid"), batch_size=batch_size, shuffle=True)
+test_loader = DataLoader(CustomImageDataset("test"), batch_size=batch_size, shuffle=True)
 
-print("epoch :", my_epoch)
-print("batch_size :", my_batch)
-print("learning_rate :", my_learning_rate)
-
-train_data_set = CustomImageDataset("train")
-train_loader = DataLoader(train_data_set, batch_size=my_batch, shuffle=True)
-
-valid_data_set = CustomImageDataset("valid")
-valid_loader = DataLoader(valid_data_set, batch_size=my_batch, shuffle=True)
-
-test_data_set = CustomImageDataset("test")
-test_loader = DataLoader(test_data_set, batch_size=my_batch, shuffle=True)
-
+# Set up neural network, loss function, and optimizer
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
-
-model = ResNet(num_classes=len(classes)).to(device)
-
-# Loss and optimizer
+model = ResNet(num_classes=3).to(device)
 criterion = nn.CrossEntropyLoss()
-optimizer = torch.optim.Adam(model.parameters(), lr=my_learning_rate)
+optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-# Train
-for epoch in range(my_epoch):
+# Train neural network
+for epoch in range(epochs):
     model.train()
     train_loss = 0.0
     for images, labels in train_loader:
@@ -45,7 +34,6 @@ for epoch in range(my_epoch):
         train_loss += loss.item() * images.size(0)
     train_loss /= len(train_loader.dataset)
     
-    # Evaluate validation set
     model.eval()
     valid_loss = 0.0
     valid_correct = 0
@@ -60,12 +48,12 @@ for epoch in range(my_epoch):
     valid_loss /= len(valid_loader.dataset)
     valid_acc = valid_correct.double() / len(valid_loader.dataset)
     
-    print(f'Epoch {epoch+1}/{my_epoch} -- '
+    print(f'Epoch {epoch+1}/{epochs} -- '
           f'Training Loss: {train_loss:.4f} -- '
           f'Validation Loss: {valid_loss:.4f} -- '
           f'Validation Accuracy: {valid_acc:.4f}')
 
-# Evaluate test set
+# Evaluate neural network
 model.eval()
 test_correct = 0
 with torch.no_grad():
@@ -76,3 +64,4 @@ with torch.no_grad():
         test_correct += torch.sum(preds == labels.data)
 test_acc = test_correct.double() / len(test_loader.dataset)
 print(f'Test Accuracy: {test_acc:.4f}')
+    

@@ -3,3 +3,5 @@
 /resized_data
 /__pycache__
 /example_img.jpg
+/projectapp/projectapp/__pycache__
+/projectapp/db.sqlite3
