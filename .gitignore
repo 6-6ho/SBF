@@ -5,3 +5,4 @@
 /example_img.jpg
 /projectapp/projectapp/__pycache__
 /projectapp/db.sqlite3
+/resnet_model.pth

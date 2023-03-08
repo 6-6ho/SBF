@@ -4,23 +4,19 @@ from data_loader import CustomImageDataset
 from model import ResNet
 from torch.utils.data import DataLoader
 
-# Set hyperparameters
-epochs = 15
+epochs = 10
 batch_size = 32
 learning_rate = 0.0001
 
-# Load datasets and create data loaders
 train_loader = DataLoader(CustomImageDataset("train"), batch_size=batch_size, shuffle=True)
 valid_loader = DataLoader(CustomImageDataset("valid"), batch_size=batch_size, shuffle=True)
 test_loader = DataLoader(CustomImageDataset("test"), batch_size=batch_size, shuffle=True)
 
-# Set up neural network, loss function, and optimizer
 device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
 model = ResNet(num_classes=3).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = torch.optim.Adam(model.parameters(), lr=learning_rate)
 
-# Train neural network
 for epoch in range(epochs):
     model.train()
     train_loss = 0.0
@@ -53,7 +49,6 @@ for epoch in range(epochs):
           f'Validation Loss: {valid_loss:.4f} -- '
           f'Validation Accuracy: {valid_acc:.4f}')
 
-# Evaluate neural network
 model.eval()
 test_correct = 0
 with torch.no_grad():
@@ -64,4 +59,5 @@ with torch.no_grad():
         test_correct += torch.sum(preds == labels.data)
 test_acc = test_correct.double() / len(test_loader.dataset)
 print(f'Test Accuracy: {test_acc:.4f}')
-    
+
+torch.save(model.state_dict(), 'resnet_model.pth')
