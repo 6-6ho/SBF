@@ -3,7 +3,7 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from time import sleep
 
-def crawler():
+def crawler(user_id, password):
         
     options = webdriver.ChromeOptions()
     options.add_argument('window-size=1920x1080')
@@ -14,8 +14,8 @@ def crawler():
     driver.get('https://everytime.kr/login')
     driver.implicitly_wait(5)
 
-    driver.find_element(By.NAME, 'userid').send_keys('') # 아이디
-    driver.find_element(By.NAME, 'password').send_keys('') # 비번
+    driver.find_element(By.NAME, 'user_id').send_keys(user_id) # 아이디
+    driver.find_element(By.NAME, 'password').send_keys(password) # 비번
 
     driver.find_element(By.XPATH, '//*[@id="container"]/form/p[3]/input').click()
 
@@ -36,6 +36,7 @@ def crawler():
     subs = soup.select('#container > div > div.tablebody > table > tbody > tr')
 
     results = []
+    result = []
 
     for sub in subs:
         subName = sub.select('h3')
@@ -45,5 +46,11 @@ def crawler():
         print(subName)
         print(subProf)
         print(subLecRoom)
+        result.append(subName, subProf, subLecRoom)
+        results.append(result)
+        
 
-    # return results[]
+    return results
+    
+if __name__=='__main__':
+    crawler("aaa", "bbb")
