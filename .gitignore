@@ -1,6 +1,5 @@
 /chromedriver.exe
 /data
-/resized_data
 /__pycache__
 /example_img.jpg
 /projectapp/projectapp/__pycache__
