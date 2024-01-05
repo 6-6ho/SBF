@@ -1,2 +1,3 @@
 ### 기록
-https://66ho.notion.site/66ho/Junho-Song-f0a512ac04da4eec9fa21d1e0e338115
+
+https://66ho.notion.site/SBF-122b02686e1b4823acdffa465988270a?pvs=4
